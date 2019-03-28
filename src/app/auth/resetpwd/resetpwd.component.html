@@ -1,0 +1,48 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<form [formGroup]="myForm" *ngIf="!isLoading">
+
+<mat-form-field>
+    <mat-select
+    placeholder="Select Users"
+    id="email">
+      <mat-option *ngFor="let user of (users$ |async)?.users">
+        {{user.email}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+	<mat-form-field>
+    <input
+    matInput
+    placeholder="New password"
+    formControlName="password"
+    required>
+		<mat-error *ngIf="myForm.hasError('required', 'password')">
+			Please enter your newpassword
+		</mat-error>
+	</mat-form-field>
+
+	<mat-form-field>
+    <input
+    matInput
+    placeholder="Confirm password"
+    type="password"
+    id="confpwd"
+    formControlName="confirmPassword"
+    required
+    [errorStateMatcher]="matcher">
+  		<mat-error *ngIf="myForm.hasError('notSame')">
+			Passwords do not match
+		</mat-error>
+  </mat-form-field>
+
+  <button
+  mat-raised-button
+  color="primary"
+  type="submit"
+  (click)="onReset()"
+  *ngIf="!isLoading">Update New Password</button>
+
+
+</form>

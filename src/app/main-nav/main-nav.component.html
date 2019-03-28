@@ -1,0 +1,116 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+  #drawer
+  class="sidenav"
+  class="app-sidenav"
+  fixedInViewport="true"
+  [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+  [mode]="(isHandset$ | async) ? 'over' : 'side'"
+  [opened]="!(isHandset$ | async)">
+  <mat-toolbar color="primary">Menu</mat-toolbar>
+  <mat-nav-list *ngIf="userIsAuthenticated">
+  <a
+      mat-list-item
+      routerLink="/dashboard"
+      routerLinkActive="active-list-item" >
+      <mat-icon matListIcon aria-label="Dashboard" >assessment</mat-icon>
+      Dashboard
+   </a>
+     <a
+        mat-list-item
+        routerLink="/viewvisit"
+        routerLinkActive="active-list-item" >
+        <mat-icon matListIcon aria-label="View My Visits" >person_pin_circle</mat-icon>
+        View Visits
+     </a>
+     <a *ngIf="userIsAuthenticated && userrole=='SalesManager'"
+        mat-list-item
+        routerLink="/viewvisitadmin"
+        routerLinkActive="active-list-item" >
+        <mat-icon matListIcon aria-label="View All Visits" >360</mat-icon>
+        View All Visits
+     </a>
+     <a  *ngIf="userIsAuthenticated"
+        mat-list-item
+        routerLink="/create"
+        routerLinkActive="active-list-item">
+        <mat-icon matListIcon aria-label="Record My Visit">my_location</mat-icon>
+        Record My Visit
+     </a>
+     <a  *ngIf="userIsAuthenticated"
+     mat-list-item
+     routerLink="/planvisit"
+     routerLinkActive="active-list-item">
+     <mat-icon matListIcon aria-label="Plan My Visit">event</mat-icon>
+     Plan My Visit
+  </a>
+     <a *ngIf="userIsAuthenticated && userrole=='SalesManager'"
+        mat-list-item
+        routerLink="/auth/signup"
+        routerLinkActive="active-list-item">
+        <mat-icon matListIcon aria-label="Create User">perm_identity</mat-icon>
+        Create User
+     </a>
+     <a *ngIf="userIsAuthenticated && userrole=='SalesManager'"
+     mat-list-item
+     routerLink="/auth/resetpwd"
+     routerLinkActive="active-list-item">
+     <mat-icon matListIcon aria-label="Reset Password">vpn_key</mat-icon>
+     Reset User Password
+  </a>
+  </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+     <mat-toolbar color="primary">
+        <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <span class="toolbar-logo">
+           <mat-icon aria-label="Business Box">next_week</mat-icon>
+           Al Mufid Business Box
+        </span>
+        <span class="spacer"></span>
+        <ul>
+           <li *ngIf="!userIsAuthenticated">
+              <a mat-button routerLink="/auth/login" routerLinkActive="mat-accent">
+                 <mat-icon aria-label="Log In">assignment_return</mat-icon>
+                 Login
+              </a>
+           </li>
+
+
+           <button mat-button
+           *ngIf="userIsAuthenticated"
+           [matMenuTriggerFor]="menu"
+           class="username">
+           <mat-icon aria-label="Account">account_circle </mat-icon> {{user}}
+             <mat-icon aria-label="Drop Down">arrow_drop_down</mat-icon>
+            </button>
+           <mat-menu #menu="matMenu">
+              <button  mat-menu-item >
+                  User Role: {{userrole}} </button>
+
+              <button  mat-menu-item routerLink="/auth/chngpwd">
+                    <mat-icon aria-label="Change Password">fingerprint</mat-icon>
+                    Change Password</button>
+
+            <button  mat-menu-item (click)="onLogout()">
+              <mat-icon aria-label="Log Out">power_settings_new</mat-icon>
+              Logout</button>
+           </mat-menu>
+
+
+        </ul>
+     </mat-toolbar>
+     <!-- Add Content Here -->
+     <div class="app-content">
+       <p  *ngIf="!userIsAuthenticated"> Please Login to Continue</p>
+        <ng-content></ng-content>
+     </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

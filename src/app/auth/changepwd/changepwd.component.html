@@ -1,0 +1,53 @@
+<mat-card>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form [formGroup]="myForm" *ngIf="!isLoading">
+
+      <mat-form-field>
+          <input
+          matInput
+          placeholder="Current password"
+          type="password"
+          formControlName="currpwd"
+          required>
+          <mat-error *ngIf="myForm.hasError('required', 'currpwd')">
+            Please enter your Current Password
+          </mat-error>
+        </mat-form-field>
+
+
+    <mat-form-field>
+      <input
+      matInput
+      placeholder="New password"
+      formControlName="password"
+      required>
+      <mat-error *ngIf="myForm.hasError('required', 'password')">
+        Please enter your newpassword
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+      matInput
+      type="password"
+      formControlName="confirmPassword"
+      id="confirmPassword"
+      placeholder="Confirm password"
+      required
+      [errorStateMatcher]="matcher">
+      <mat-error *ngIf="myForm.hasError('notSame')">
+        Passwords do not match
+      </mat-error>
+    </mat-form-field>
+
+
+    <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    (click)="chngpwd()"
+    *ngIf="!isLoading">Update New Password</button>
+
+
+  </form>
+  </mat-card>

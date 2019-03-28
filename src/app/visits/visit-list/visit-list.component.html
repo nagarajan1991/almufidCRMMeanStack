@@ -1,0 +1,39 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-form-field class="mat-form-field--inline">
+  <input matInput [matDatepicker]="FromDatepicker" (ngModelChange)="fetchVisits()" [(ngModel)]="fromDate"  placeholder="From Date">
+  <mat-datepicker-toggle matSuffix [for]="FromDatepicker">
+  </mat-datepicker-toggle>
+  <mat-datepicker #FromDatepicker></mat-datepicker>
+</mat-form-field>
+<mat-form-field class="mat-form-field--inline">
+  <input matInput [matDatepicker]="ToDatepicker" (ngModelChange)="fetchVisits()" [(ngModel)]="toDate"  placeholder="To Date">
+  <mat-datepicker-toggle matSuffix [for]="ToDatepicker">
+  </mat-datepicker-toggle>
+  <mat-datepicker #ToDatepicker></mat-datepicker>
+</mat-form-field>
+<a mat-raised-button color="primary" (click)="downloadVisits()" class="export-to-excel">Export to Excel</a>
+<mat-accordion multi="true" *ngIf="visits.length>0  && !isLoading" >
+  <mat-expansion-panel *ngFor="let visit of visits.reverse()">
+    <mat-expansion-panel-header
+    *ngIf="userIsAuthenticated && userId_local == visit.creator "
+    class="right-aligned-header">
+        <mat-panel-title>
+            <b> Customer : </b>{{visit.customer}}
+        </mat-panel-title>
+        <mat-panel-description>
+            {{visit.date}}
+        </mat-panel-description>
+
+    </mat-expansion-panel-header>
+    <p> <b> ContactNumber : </b>{{visit.contact_no}} </p>
+    <p> <b>Remarks : </b> {{visit.remarks}}</p>
+    <p>
+      <a  href="http://maps.google.com/maps?t=k&q=loc:{{visit.lat}}+{{visit.lng}}" target="_blank">GMaps Handle</a></p>
+    <!--<mat-action-row *ngIf="userIsAuthenticated && userId_local == visit.creator ">
+      <a mat-button color="primary" [routerLink]="['/edit',visit.id]">Edit</a>
+      <button mat-button color="primary" (click)="onDelete(visit.id)">Delete</button>
+    </mat-action-row>-->
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-paginator [length]="totalVisits" [pageSize]="visitsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)" *ngIf="visits.length>0"></mat-paginator>
+<p class="info-text mat-body-1" *ngIf="visits.length <=0  && !isLoading">No Visits Recorded Yet!</p>

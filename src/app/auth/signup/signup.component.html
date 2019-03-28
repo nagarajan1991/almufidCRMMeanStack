@@ -1,0 +1,34 @@
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
+    <mat-form-field>
+          <input matInput name="fullname" ngModel type="text" placeholder="Full Name" #nameInput="ngModel" required>
+          <mat-error *ngIf="nameInput.invalid">Please enter a valid Name.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" required email>
+      <mat-error *ngIf="emailInput.invalid">Please enter a valid email.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel" required>
+      <mat-error *ngIf="passwordInput.invalid">Please enter a valid password.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="User Role" [(ngModel)]="userrolevalue" name="userrolevalue">
+        <mat-option *ngFor="let userrole of userroles" [value]="userrole.value">
+          {{userrole.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p> Selected role: {{userrolevalue}} </p>
+    <mat-form-field>
+        <input matInput name="mobile"
+        ngModel type="text"
+        placeholder="Mobile Number: +971512345678"
+        #mobile="ngModel"
+        required>
+        <mat-error *ngIf="mobile.invalid">Please enter a valid Contact number.</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="accent" type="submit" *ngIf="!isLoading">Signup</button>
+  </form>
+</mat-card>

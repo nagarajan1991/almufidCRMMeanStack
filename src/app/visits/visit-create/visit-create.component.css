@@ -1,0 +1,13 @@
+mat-form-field,
+textarea {
+  width:100%;
+}
+
+mat-spinner {
+  margin:auto;
+}
+
+agm-map {
+  height: 300px;
+  margin:auto;
+}

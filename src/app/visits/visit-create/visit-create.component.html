@@ -1,0 +1,57 @@
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form  (submit)="onSaveVisit(visitForm)" #visitForm="ngForm"  *ngIf="!isLoading">
+      <mat-form-field>
+          <input
+          matInput
+          type="text"
+          name="customer"
+          [formControl]="customer"
+          [ngModel]="visit?.customer"
+          required
+          placeholder="Customer"
+          [matAutocomplete]="auto"
+          >
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option (onSelectionChange)="selectVisit(option)" *ngFor="let option of visits$ | async" [value]="option.customer">
+              {{option.customer}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="customer.invalid">Please enter Customer Name/Contact Name</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field>
+          <textarea
+          matInput row="4"
+          name="contact_no"
+          [ngModel]="visit?.contact_no"
+          placeholder="Contact Number  "
+          #content="ngModel">
+        </textarea>
+        <mat-error *ngIf="content.invalid">Please enter Contact Number</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <textarea
+          matInput row="4"
+          name="remarks"
+          [ngModel]="visit?.remarks"
+          placeholder="Remarks  "
+          #content="ngModel">
+        </textarea>
+        <mat-error *ngIf="content.invalid">Please enter remarks</mat-error>
+        </mat-form-field>
+
+        <agm-map mat-body [zoom]="15"  [latitude]="lat" [longitude]="lng">
+                <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+        </agm-map>
+
+        <br>
+        <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        >Save Button</button>
+  </form>
+</mat-card>
